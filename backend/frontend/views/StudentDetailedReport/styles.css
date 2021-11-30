@@ -1,0 +1,152 @@
+/* @media screen and (min-width: 768px) { */
+.carousel-control .glyphicon-chevron-left,
+.carousel-control .glyphicon-chevron-right,
+.carousel-control .icon-next,
+.carousel-control .icon-prev {
+  width: 30px;
+  height: 30px;
+  margin-top: -10px;
+  font-size: 30px;
+}
+.carousel-control .glyphicon-chevron-left,
+.carousel-control .icon-prev {
+  margin-left: -10px;
+}
+.carousel-control .glyphicon-chevron-right,
+.carousel-control .icon-next {
+  margin-right: -10px;
+}
+.carousel-caption {
+  right: 20%;
+  left: 20%;
+  padding-bottom: 30px;
+}
+.carousel-indicators {
+  bottom: 20px;
+}
+/* } */
+.btn-group-vertical > .btn-group:after,
+.btn-group-vertical > .btn-group:before,
+.btn-toolbar:after,
+.btn-toolbar:before,
+.clearfix:after,
+.clearfix:before,
+.container-fluid:after,
+.container-fluid:before,
+.container:after,
+.container:before,
+.dl-horizontal dd:after,
+.dl-horizontal dd:before,
+.form-horizontal .form-group:after,
+.form-horizontal .form-group:before,
+.modal-footer:after,
+.modal-footer:before,
+.modal-header:after,
+.modal-header:before,
+.nav:after,
+.nav:before,
+.navbar-collapse:after,
+.navbar-collapse:before,
+.navbar-header:after,
+.navbar-header:before,
+.navbar:after,
+.navbar:before,
+.pager:after,
+.pager:before,
+.panel-body:after,
+.panel-body:before,
+.row:after,
+.row:before {
+  display: table;
+  content: ' ';
+}
+.btn-group-vertical > .btn-group:after,
+.btn-toolbar:after,
+.clearfix:after,
+.container-fluid:after,
+.container:after,
+.dl-horizontal dd:after,
+.form-horizontal .form-group:after,
+.modal-footer:after,
+.modal-header:after,
+.nav:after,
+.navbar-collapse:after,
+.navbar-header:after,
+.navbar:after,
+.pager:after,
+.panel-body:after,
+.row:after {
+  clear: both;
+}
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+.hide {
+  display: none !important;
+}
+.show {
+  display: block !important;
+}
+.invisible {
+  visibility: hidden;
+}
+
+#pdf_template {
+  background: white;
+  width: 1000px;
+  font-size: 12px;
+  /* display: none; */
+}
+
+.pdf-section-block {
+  /* width: 400px; */
+  width: 49%;
+  margin: 5px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.pdf-section-block-title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.pdf-section-block-content {
+  border: 2px solid grey !important;
+}
+
+.pdf-section-block-content .row {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.pdf-section-block .col-sm-10 {
+  border-right: 2px solid grey;
+}
+
+.pdf-section-block .col-sm-2 {
+  /*background-color: orange;*/
+  background: orange !important;
+}
+
+.pdf-table-row,
+.pdf-table-row td {
+  background: #d3d3d3 !important;
+}
+
+.pdf-section-block .row {
+  border-bottom: 2px solid grey !important;
+}
+
+.f-right {
+  /* float: right !important; */
+}

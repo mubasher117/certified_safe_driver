@@ -1,0 +1,12 @@
+*.pyc
+env/
+.terraform
+.env
+.idea
+staticfiles/
+Dockerfile copy
+test.py
+dump.rdb
+db.sqlite3
+media
+staticfiles

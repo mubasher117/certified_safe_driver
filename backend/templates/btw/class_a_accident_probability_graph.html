@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        div {
+            position: relative;
+        }
+
+        div > code {
+            position: relative;
+            width: 100%;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+
+<div id="container" style="width:100%; height:400px;"></div>
+<script>
+    var graph_data = {};
+    var series_data = [];
+    var categories = [];
+    $(document).ready(function () {
+        $.get("/api/v1/students/{{student_id}}/tests/{{test_id}}/btw/{{class_name}}/accident_probability_graph/", function
+            (result, status) {
+            graph_data = result.chart_data;
+            for (let [key, item] of Object.entries(graph_data)) {
+                categories.push(item.title);
+                series_data.push(Number.parseFloat(item.percentage));
+            }
+            console.log(categories);
+            console.log(series_data);
+            loadChart(categories, series_data)
+        });
+    });
+
+    function loadChart(categories, series_data) {
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Accident Probability Graph'
+            },
+            xAxis: {
+                categories: categories
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            series: [{
+                name: '',
+                data: series_data
+            }],
+        });
+
+    }
+</script>
+</body>
+</html>

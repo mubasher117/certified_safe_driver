@@ -1,0 +1,38 @@
+export const STUDENTS = {
+  GET_STUDENTS: 'GET_STUDENTS',
+  GET_STUDENTS_SUCCESS: 'GET_STUDENTS_SUCCESS',
+  GET_STUDENTS_ERROR: 'GET_STUDENTS_ERROR',
+
+  UPDATE_STUDENT: 'UPDATE_STUDENT',
+  UPDATE_STUDENT_SUCCESS: 'UPDATE_STUDENT_SUCCESS',
+  UPDATE_STUDENT_ERROR: 'UPDATE_STUDENT_ERROR',
+
+  GET_STUDENT_REPORT: 'GET_STUDENT_REPORT',
+  GET_STUDENT_REPORT_SUCCESS: 'GET_STUDENT_REPORT_SUCCESS',
+  GET_STUDENT_REPORT_ERROR: 'GET_STUDENT_REPORT_ERROR',
+
+  ADD_STUDENT: 'ADD_STUDENT',
+  ADD_STUDENT_SUCCESS: 'ADD_STUDENT_SUCCESS',
+  ADD_STUDENT_ERROR: 'ADD_STUDENT_ERROR',
+};
+
+const getStudents = () => ({
+  type: STUDENTS.GET_STUDENTS,
+});
+
+const updateStudent = payload => ({
+  type: STUDENTS.UPDATE_STUDENT,
+  payload,
+});
+
+const getStudentReport = payload => ({
+  type: STUDENTS.GET_STUDENT_REPORT,
+  payload,
+});
+
+const addStudent = payload => ({
+  type: STUDENTS.ADD_STUDENT,
+  payload,
+});
+
+export { getStudents, updateStudent, getStudentReport, addStudent };

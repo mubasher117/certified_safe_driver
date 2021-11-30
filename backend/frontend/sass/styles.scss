@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+// It will import Source Sans Pro and Roboto
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Source+Sans+Pro&display=swap');
+
+body,
+#root {
+  overflow: auto;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+main {
+  min-height: 700px;
+}
+.MuiListItemText-root {
+  flex: 0.8 1 auto !important;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-device-height: 530px) {
+  #gridContainer {
+    height: 400vh !important;
+  }
+}

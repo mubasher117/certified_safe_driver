@@ -1,0 +1,35 @@
+{#<link rel="stylesheet"#}
+{#      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap-grid.min.css"/>#}
+<div class="container" style="margin: 0; padding: 0">
+    {% for item in fields %}
+        {% if item.data %}
+            <div style="border: 1px solid #919191; width: 100%; max-width: 650px; margin-bottom: 5px">
+                <div style="background-color: #417690; color: #fff; padding: 10px">
+                    <div style="font-weight: 600; font-size: 16px;">
+                        {{ forloop.counter }}. {{ item.title }}</div>
+                    <div>({{ item.db_table }})</div>
+                </div>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Field Title</th>
+                        <th>db_field</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for field in item.data %}
+                        <tr>
+                            <td style="width: 1%">{{ forloop.counter }}</td>
+                            <td style="width: 40%">{{ field.title }}</td>
+                            <td style="color: #447e9b; font-weight: 600">{{ field.field }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+

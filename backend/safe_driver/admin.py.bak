@@ -1,0 +1,533 @@
+from django.contrib import admin
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+
+# Register your models here.
+
+from .admin_inlines import (btw_inlines, vrt_inilines, pas_inlines, swp_inlines)
+from .models import *
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ['name', 'company_id', 'city', 'state', 'zip_code', 'address', 'created']
+    fields = ('name', 'company_id', ('city', 'state'), ('zip_code', 'address'),)
+    search_fields = ('name', 'company_id', 'city', 'state', 'zip_code', 'address', 'created')
+
+
+@admin.register(InstructorProfile)
+class InstructorProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'get_user_name', 'customer_number', 'contact_name', 'company', 'driver_id',
+                    'driver_license_number',
+                    'driver_license_state', 'driver_license_expire_date', 'driver_license_class']
+
+    list_editable = ('driver_license_class',)
+    # filter_horizontal = ('driver_license_class', )
+    search_fields = ['user__username', 'user__first_name', 'user__last_name',
+                     'user__email', 'customer_number', 'contact_name', 'driver_id', 'driver_license_number',
+                     'driver_license_state', 'driver_license_expire_date', 'driver_license_class',
+                     'company__name', 'company__id']
+
+    raw_id_fields = ['user', 'company']
+    list_select_related = ('user', 'company')
+    readonly_fields = ('created', 'updated')
+
+    def get_user_name(self, instance):
+        return '%s %s' % (instance.user.first_name, instance.user.last_name)
+
+    get_user_name.short_description = 'Name'
+
+    fieldsets = (
+
+        (None, {
+            'fields': ('user',)
+        }),
+        (None, {
+            'fields': (('customer_number', 'contact_name'),),
+        }),
+        ('Company', {
+            'fields': ('company',),
+        }),
+        ('Driver Info', {
+            'classes': ('',),
+            'fields': ('driver_id', 'driver_license_number', 'driver_license_state',
+                       'driver_license_expire_date', 'driver_license_class'),
+        }),
+
+    )
+
+
+# class ReasonForTrainingInline(admin.StackedInline):
+#     model = ReasonForTraining
+#     # prepopulated_fields = ('user')
+#
+#
+# class TypeOfTrainingCompletedInline(admin.StackedInline):
+#     model = TypeOfTrainingCompleted
+# prepopulated_fields = ('user')
+
+
+@admin.register(StudentInfo)
+class StudentInfoAdmin(admin.ModelAdmin):
+    list_display = ['user', 'company', 'driver_license_number', 'driver_license_state',
+                    'driver_license_expire_date', 'driver_license_class',
+                    'endorsements', 'corrective_lense_required', 'created']
+
+    readonly_fields = ('created', 'updated')
+
+    search_fields = ('user__username', 'user__first_name', 'user__last_name',
+                     'user__email',
+                     'company__name', 'driver_id',
+                     'driver_license_number', 'driver_license_state',
+                     'driver_license_expire_date',
+                     'endorsements', 'corrective_lense_required',
+                     'cell', 'city', 'country', 'state', 'territory', 'zip_code',
+                     'contact_name', 'current_user_identity', 'budget',
+                     'client_name', 'client_number', 'customer_number', 'date_of_hire',
+                     'manager_name', 'manager_employee_id', 'manager_record_id', 'user_number',
+                     'user_identity', 'employee_number'
+                     )
+
+    list_select_related = ('user', 'company')
+    list_filter = (
+        'driver_license_class', 'endorsements', 'corrective_lense_required',
+        'driver_license_expire_date', 'created'
+    )
+
+    fieldsets = (
+
+        (None, {
+            'fields': ('user', 'company', 'instructor',
+                       'created', 'updated'),
+        }),
+        (None, {
+            'fields': ('cell',)
+        }),
+        ('Address', {
+            'fields': (('address1', 'address2'), ('city', 'state', 'territory'), 'zip_code', 'country'),
+        }),
+
+        ('-', {
+            'fields': ('contact_name', 'current_user_identity', 'budget')
+        }),
+        ('Categories', {
+            'fields': (
+                ('category1_name', 'category1_value'),
+                ('category2_name', 'category2_value'),
+                ('category3_name', 'category3_value'),
+                ('category4_name', 'category4_value'),
+                ('category5_name', 'category5_value'),
+                ('category6_name', 'category6_value'),
+            )
+        }),
+        ('Client Info', {
+            'fields': (('client_name', 'client_number'),)
+        }),
+        ('-', {
+            'fields': ('chart_ref', 'customer_number', 'date_of_hire', 'detractors',)
+        }),
+        ('Discount', {
+            'fields': (('discount_item', 'discount_service'),)
+        }),
+        ('Driver Info', {
+            'fields': (
+                'driver_id',
+                ('driver_license_number', 'driver_license_state'),
+                ('driver_license_expire_date',),
+                ('driver_eld_exempt', 'driver_license_class'),
+                ('endorsements', 'corrective_lense_required', 'history_reviewed'),
+                'dot_expiration_date',
+                ('location', 'driver_duty_status'),
+                'start_time',
+                'end_time',
+                'restrictions',
+                'comments',
+            ),
+        }),
+        ('Type of training completed', {
+            'fields': (
+                ('equipement', 'pre_post_trip', 'behind_the_wheel', 'eye_movement', 'safe_work_practice',
+                 'production', 'vehicle_road_test', 'passenger_evacuation', 'passenger_pre_trip'),
+            )
+        }),
+        ('Reason for training', {
+            'fields': (
+                ('new_hire', 'near_miss', 'incident_follow_up', 'change_job', 'change_of_equipment', 'annual'),
+            ),
+        }),
+        ('Dates', {
+            'fields': (
+                ('injury_date', 'accident_date'),
+                ('taw_start_date', 'taw_end_date'),
+                ('lost_time_start_date', 'return_work_date'),
+            ),
+        }),
+        ('Manager Info', {
+            'fields': (
+                'manager_employee_id',
+                ('manager_name', 'manager_record_id'),
+            ),
+        }),
+        ('Others', {
+            'fields': (
+                'employee_number',
+                'growth', 'job_type',
+                ('latitude', 'longitude'),
+                'lead_source', 'mail_code', 'national_identitfier',
+                'next_step', 'notify_group_name', 'qouta', 'referral',
+                'sales_tax_rate_record_id', 'salutation', 'title',
+                'url',
+                'user_group_name', 'timer_auto_sync', 'value',
+                'user_identity', 'user_number', 'user_type',
+                'user_note1', 'user_note2'
+            ),
+        }),
+    )
+
+
+# class MyStudentInfo(StudentInfo):
+#     class Meta:
+#         proxy = True
+#
+#
+# # @admin.register(StudentInfo)
+# class StudentInfoAdmin2(StudentInfoAdmin):
+#     readonly_fields = ('created', 'updated')
+#     fieldsets = (
+#
+#         (None, {
+#             'fields': ('user', 'company', 'instructor',
+#                        'created', 'updated'),
+#         }),
+#         (None, {
+#             'fields': ('cell',)
+#         }),
+#         ('Address', {
+#             'fields': (('address1', 'address2'), ('city', 'state', 'territory'), 'zip_code', 'country'),
+#         }),
+#
+#         ('-', {
+#             'fields': ('contact_name', 'current_user_identity', 'budget')
+#         }),
+#         ('Categories', {
+#             'fields': (
+#                 ('category1_name', 'category1_value'),
+#                 ('category2_name', 'category2_value'),
+#                 ('category3_name', 'category3_value'),
+#                 ('category4_name', 'category4_value'),
+#                 ('category5_name', 'category5_value'),
+#                 ('category6_name', 'category6_value'),
+#             )
+#         }),
+#         ('Client Info', {
+#             'fields': (('client_name', 'client_number'),)
+#         }),
+#         ('-', {
+#             'fields': ('chart_ref', 'customer_number', 'date_of_hire', 'detractors',)
+#         }),
+#         ('Discount', {
+#             'fields': (('discount_item', 'discount_service'),)
+#         }),
+#         ('Driver Info', {
+#             'fields': (
+#                 'driver_id',
+#                 ('driver_license_number', 'driver_license_state'),
+#                 ('driver_license_expire_date',),
+#                 ('driver_eld_exempt', 'driver_license_class'),
+#                 ('endorsements', 'corrective_lense_required', 'history_reviewed'),
+#                 'dot_expiration_date',
+#                 ('location', 'driver_duty_status'),
+#                 'start_time',
+#                 'end_time',
+#                 'restrictions',
+#                 'comments',
+#             ),
+#         }),
+#         ('Type of training completed', {
+#             'fields': (
+#                 ('equipement', 'pre_post_trip', 'behind_the_wheel', 'eye_movement', 'safe_work_practice',
+#                  'production', 'vehicle_road_test', 'passenger_evacuation', 'passenger_pre_trip'),
+#             )
+#         }),
+#         ('Reason for training', {
+#             'fields': (
+#                 ('new_hire', 'near_miss', 'incident_follow_up', 'change_job', 'change_of_equipment', 'annual'),
+#             ),
+#         }),
+#         ('Dates', {
+#             'fields': (
+#                 ('injury_date', 'accident_date'),
+#                 ('taw_start_date', 'taw_end_date'),
+#                 ('lost_time_start_date', 'return_work_date'),
+#             ),
+#         }),
+#         ('Manager Info', {
+#             'fields': (
+#                 'manager_employee_id',
+#                 ('manager_name', 'manager_record_id'),
+#             ),
+#         }),
+#         ('Others', {
+#             'fields': (
+#                 'employee_number',
+#                 'growth', 'job_type',
+#                 ('latitude', 'longitude'),
+#                 'lead_source', 'mail_code', 'national_identitfier',
+#                 'next_step', 'notify_group_name', 'qouta', 'referral',
+#                 'sales_tax_rate_record_id', 'salutation', 'title',
+#                 'url',
+#                 'user_group_name', 'timer_auto_sync', 'value',
+#                 'user_identity', 'user_number', 'user_type',
+#                 'user_note1', 'user_note2'
+#             ),
+#         }),
+#     )
+#
+#
+# admin.site.register(MyStudentInfo, StudentInfoAdmin2)
+
+
+# inlines = [ReasonForTrainingInline, TypeOfTrainingCompletedInline]
+
+
+@admin.register(SafeDriveEquipment)
+class SafeDriveEquipmentAdmin(admin.ModelAdmin):
+    # list_display = [field.name for field in SafeDriveEquipment._meta.get_fields()]
+    list_display = ['student', 'created']
+
+    search_fields = ('student__first_name', 'student__last_name', 'student__email', 'created')
+
+    list_filter = (
+        ('created', DateTimeRangeFilter),
+    )
+
+    fieldsets = (
+        (
+            None, {
+                'fields': (
+                    'student',
+                ),
+            }
+        ),
+        (
+            'Power Unit', {
+                'classes': ('wide',),
+                'fields': (
+                    'power_unit_number',
+                    'transmission_type',
+                    'vehicle_type',
+                    'vehicle_type_other',
+                    'vehicle_manufacturer',
+                    'vehicle_manufacturer_other',
+                )
+            }
+        ),
+        (
+            'Combination Vehicle - Train or Chain', {
+                'classes': ('wide',),
+                'fields': (
+                    'single_trailer_length',
+                    'single_trailer_length_other',
+                    'combination_vehicles',
+                    'combinations_vehicles_other',
+                    'combination_vehicles_length',
+                    'combination_vehicles_length_other',
+                    'dolly_or_gear_type',
+                    'dolly_or_gear_type_other',
+                )
+            }
+        ),
+        (
+            'Vehicle Numbers', {
+                'classes': ('wide',),
+                'fields': (
+                    'trailer_1',
+                    'dolly_1',
+                    'trailer_2',
+                    'dolly_2',
+                    'trailer_3',
+                )
+            }
+        ),
+    )
+
+
+@admin.register(SafeDriveNote)
+class SafeDriveNoteAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'get_student_full_name', 'get_note_truncated', 'created', 'updated']
+    list_select_related = ('student',)
+    search_fields = ('student__username', 'note')
+
+    def get_note_truncated(self, instance):
+        if instance.note and instance.note != "":
+            if len(instance.note) < 100:
+                return instance.note
+            return instance.note[:100] + '...'
+        return None
+
+    def get_student_full_name(self, instance):
+        return instance.student.full_name
+
+    get_student_full_name.short_description = 'Full Name'
+    get_student_full_name.admin_order_field = 'student'
+    get_note_truncated.short_description = 'Note Text'
+
+
+@admin.register(SafeDriveEye)
+class SafeDriveEyeAdmin(admin.ModelAdmin):
+    list_display = ['__str__',
+                    'start_time', 'stop_time', 'eye_movement', 'eye_lead_counter', 'parked_counter',
+                    'intersections_counter', 'parked_cars_counter', 'predestrians_counter', 'follow_time_counter',
+                    'rear_counter', 'front_counter', 'gauges_counter', 'left_mirror_counter', 'right_mirror_counter',
+                    'created', ]
+    readonly_fields = ['created', 'updated']
+
+    list_filter = (
+        ('created', DateTimeRangeFilter),
+        ('updated', DateTimeRangeFilter),
+    )
+    list_select_related = ('student',)
+    search_fields = (
+        'student__username', 'student__first_name', 'student_last_name', 'student__email',
+        'start_time', 'stop_time', 'eye_movement', 'eye_lead_counter', 'parked_counter',
+        'intersections_counter', 'parked_cars_counter', 'predestrians_counter', 'follow_time_counter',
+        'rear_counter', 'front_counter', 'gauges_counter', 'left_mirror_counter', 'right_mirror_counter',
+        'created', 'updated')
+
+
+@admin.register(SafeDriveProd)
+class SafeDriveProdAdmin(admin.ModelAdmin):
+    list_display = ['student', 'date', 'department', 'miles', 'location', 'route_number', 'location',
+                    'company_rep_name', 'created']
+
+    list_filter = (
+        ('date', DateRangeFilter),
+        'start_work',
+        'on_time', 'keys_ready', 'timecard_system_ready', 'equipment_ready', 'equipment_clean'
+    )
+
+    search_fields = ('student__username', 'student__first_name', 'student__last_name', 'student__email',
+                     'date', 'department', 'miles', 'location', 'route_number', 'location',
+                     'company_rep_name', 'start_odometer', 'finish_odometer', 'trailer', 'odometer', 'employee',
+                     'observer_first_name', 'observer_last_name')
+
+
+class PreTripInsideCabInline(admin.TabularInline):
+    model = PreTripInsideCab
+
+
+class PreTripCOALSInline(admin.TabularInline):
+    model = PreTripCOALS
+
+
+class PreTripEngineCompartmentInline(admin.TabularInline):
+    model = PreTripEngineCompartment
+
+
+class PreTripVehicleFrontInline(admin.TabularInline):
+    model = PreTripVehicleFront
+
+
+class PreTripBothSidesVehicleInline(admin.TabularInline):
+    model = PreTripBothSidesVehicle
+
+
+class PreTripvehicleTractorRearInline(admin.TabularInline):
+    model = PreTripVehicleOrTractorRear
+
+
+class PreTripFrontTrailerBoxInline(admin.TabularInline):
+    model = PreTripFrontTrailerBox
+
+
+class PreTripDriverSideTrailerBoxInline(admin.TabularInline):
+    model = PreTripDriverSideTrailerBox
+
+
+class PreTripRearTrailerBoxInline(admin.TabularInline):
+    model = PreTripRearTrailerBox
+
+
+class PreTripPassengerSideTrailerBoxInline(admin.TabularInline):
+    model = PreTripPassengerSideTrailerBox
+
+
+class PreTripDollyInline(admin.TabularInline):
+    model = PreTripRearTrailerBox
+
+
+class PreTripCombinationVehiclesInline(admin.TabularInline):
+    model = PreTripCombinationVehicles
+
+
+class PreTripPostTripInline(admin.TabularInline):
+    model = PreTripPostTrip
+
+
+pre_trips_inline = [PreTripInsideCabInline, PreTripCOALSInline, PreTripEngineCompartmentInline,
+                    PreTripVehicleFrontInline, PreTripBothSidesVehicleInline, PreTripvehicleTractorRearInline,
+                    PreTripFrontTrailerBoxInline, PreTripDriverSideTrailerBoxInline, PreTripRearTrailerBoxInline,
+                    PreTripPassengerSideTrailerBoxInline, PreTripDollyInline, PreTripCombinationVehiclesInline,
+                    PreTripPostTripInline]
+
+
+@admin.register(SafeDrivePreTrip)
+class SafeDrivePreTripAdmin(admin.ModelAdmin):
+    list_display = ['student', 'date', 'start_time', 'end_time', 'company_rep_name', 'created']
+    inlines = pre_trips_inline
+
+    search_fields = ('student__first_name', 'student__last_name', 'student__email', 'date', 'company_rep_name')
+    list_filter = (
+        ('date', DateRangeFilter), ('created', DateTimeRangeFilter),
+    )
+
+
+@admin.register(SafeDriveBTW)
+class SafeDriveBTWAdmin(admin.ModelAdmin):
+    list_display = ['student', 'date', 'start_time', 'end_time', 'company_rep_name', 'created']
+    inlines = btw_inlines
+
+    # date_h = 'date'
+    search_fields = ('student__first_name', 'student__last_name', 'student__email', 'date', 'company_rep_name')
+    list_filter = (
+        ('date', DateRangeFilter), ('created', DateTimeRangeFilter),
+    )
+
+
+@admin.register(SafeDriveVRT)
+class SafeDriveVRTAdmin(admin.ModelAdmin):
+    list_display = ['student', 'date', 'miles', 'medical_card_expire_date', 'state', 'created']
+    inlines = vrt_inilines
+
+    search_fields = ('student__first_name', 'student__last_name', 'student__email', 'date',
+                     'miles', 'equipment', 'medical_card_expire_date', 'state', 'title', 'equiment_used',
+                     'type_of_power_unit',
+                     'trailer_length', 'number_of_trailers', 'print'
+                     )
+    list_filter = (
+        ('date', DateRangeFilter),
+        ('medical_card_expire_date', DateRangeFilter),
+        ('created', DateTimeRangeFilter),
+    )
+
+
+@admin.register(SafeDrivePAS)
+class SafeDrivePASAdmin(admin.ModelAdmin):
+    list_display = ['student', 'date', 'start_time', 'end_time', 'company_rep_name', 'created']
+    inlines = pas_inlines
+
+    # date_h = 'date'
+    search_fields = ('student__first_name', 'student__last_name', 'student__email', 'date', 'company_rep_name')
+    list_filter = (
+        ('date', DateRangeFilter), ('created', DateTimeRangeFilter),
+    )
+
+
+@admin.register(SafeDriveSWP)
+class SafeDriveSWPAdmin(admin.ModelAdmin):
+    list_display = ['student', 'date', 'start_time', 'end_time', 'company_rep_name', 'created']
+    inlines = swp_inlines
+
+    search_fields = ('student__first_name', 'student__last_name', 'student__email', 'date', 'company_rep_name')
+    list_filter = (
+        ('date', DateRangeFilter), ('created', DateTimeRangeFilter),
+    )

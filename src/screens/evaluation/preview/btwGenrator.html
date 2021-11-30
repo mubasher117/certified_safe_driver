@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+    <html>
+    
+    <head>
+    <title>iOS CSD BTW </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+
+#pdf_template {
+    background: white;
+    width: 1000px;
+    font-size: 12px;
+    /* display: none; */
+}
+
+.pdf-section-block {
+    width: 415px;
+    margin: 5px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.pdf-section-block-title {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.pdf-section-block-content {
+    border: 2px solid grey !important;
+}
+
+.pdf-section-block-content .row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.pdf-section-block .col-sm-10 {
+    border-right: 2px solid grey;
+}
+
+.pdf-section-block .col-sm-2 {
+    /*background-color: orange;*/
+    background: orange !important;
+}
+
+.pdf-table-row,
+.pdf-table-row td {
+    background: #D3D3D3 !important;
+}
+
+.pdf-table-row-white,
+.pdf-table-row-white td {
+    background: #ffffff !important;
+}
+
+.pdf-section-block .row {
+    border-bottom: 2px solid grey !important;
+}
+
+
+@media print {
+    body {
+        -webkit-print-color-adjust: exact !important;
+        float:none !important;
+    }
+
+    .pdf-section-block .col-sm-2, .pdf-section-block .col-xs-2 {
+        background: rgb(255,165,0) !important;
+    }
+
+    .pdf-section-block-content, .pdf-section-block, .signatures, .signatures > div{
+        page-break-inside: avoid !important;
+    }
+
+     #pdf_template_2, .pdf-sections-results{
+         float: none !important;
+     }
+
+    #container1, #pdf_template_2 .pdf-sections-results{
+        page-break-before: always !important;
+    }
+    
+    #turnsDiv, #pdf_template_2 .pdf-sections-results{
+        page-break-before: always !important;
+    }
+}
+
+
+
+</style>
+</head>
+<body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<div id="pdf_template">
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <img src={'./CSDlogo.png'} style="position:relative; top:10px;" width="200" alt=""></img>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 text-center">
+                    <h3>Certified Safe Driver Inc.</h3>
+                    <h4>Behind the Wheel Evaluation and Coaching</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-6"></div>
+                        <div class="col-sm-6 col-xs-6">
+                            <span>Company Name</span>
+                            <span class="value" id="company">Testing Company</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-4 text-center">
+                    <div>
+                        <span>Date:</span>
+                        <span class="value" id="dateTime">2021-04-21</span>
+                    </div>
+                    <div>
+                        <span>Employee #:</span>
+                        <span class="value" id="employeeId">23</span>
+                    </div>
+                    <div>
+                        <span>Driver Name:</span>
+                        <span class="value" id="driverName">Ron Ron</span>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-6">
+                            <div>
+                                <span>License Exp. date:</span>
+                                <span class="value" id="driverLicenseExpirationDate">2021-09-22</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <div>
+                                <span>Class:</span>
+                                <span class="value" id="driverLicenseClass">A</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>History reviewed:</span>
+                        <span class="value" id="driverHistoryReviewed">no</span>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <div>
+                        <span>Endorsements:</span>
+                        <span class="value" id="endorsements">yes</span>
+                    </div>
+                    <div>
+                        <span>Dot Exp. date:</span>
+                        <span class="value" id="dotExpirationDate">2021-09-22</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-center"><span>Reasons: </span><span class="value" id="reasons">     Training Annual,</span></div>
+        <div class="col-sm-12 col-xs-12 text-center" style="background-color:rgb(166, 166, 236) !important; width: 110%;">
+            <span>5 = performed correctly-4 = Reinforced - 3 = corrected &amp; reinforced - 2 = Multi corrections &amp;
+                reinforced - 1 = unacceptable</span>
+        </div>
+        <div class="col-sm-12 text-center">
+            <div class="row">
+                <div class="col-sm-6 col-xs-6">
+                    <span>Start Time:</span>
+                    <span class="value" id="startTime">00:37:00</span>
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                    <span>End Time:</span>
+                    <span class="value" id="endTime">N/A</span>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="row" id="pdf_template_1">
+        <div class="col-sm-12 col-xs-12 pdf-sections" style="margin-left: 3%;">
+            <div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>1)</span></div>
+                    <div class="pdf-section-block-title"><span>Cab safety</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Seat belt</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Cab distractions</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Cab obstructions</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Cab chemicals</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>2)</span></div>
+                    <div class="pdf-section-block-title"><span>Start engine</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Park brake applied</div>
+                <div class="col-sm-2 col-xs-2" id="01a">2</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Trans in neutral</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Clutch depressed</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Uses starter properly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>3)</span></div>
+                    <div class="pdf-section-block-title"><span>Engine operation</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Lugging</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Over revving</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Check gauges</div>
+                <div class="col-sm-2 col-xs-2" id="01a">2</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>4)</span></div>
+                    <div class="pdf-section-block-title"><span>Clutch and transmission</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Start off smoothly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Proper gear use</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Shifter smoothly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Proper gear sequence</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Does not ride</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Does not coast</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>5)</span></div>
+                    <div class="pdf-section-block-title"><span>Coupling</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Check for hazards</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Backs under slowly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Secures equipment</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Physical check coupling</div>
+                <div class="col-sm-2 col-xs-2" id="01a">3</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Charges system correctly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">4</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>6)</span></div>
+                    <div class="pdf-section-block-title"><span>Uncoupling</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Secures equipment</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Chock wheels</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Lower landing gear</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Pull away or trailer secure</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Leve or firm ground</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>7)</span></div>
+                    <div class="pdf-section-block-title"><span>Brakes and stopping</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Checks rear or gives warning</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Full stop or smooth</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Does not fan</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Down shifts</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Uses foot brake only</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Hand valve use</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">g)  Does not roll back</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">h)  Engine assist</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">i)  Avoids sudden stops</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>8)</span></div>
+                    <div class="pdf-section-block-title"><span>Eye movement and mirror</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Eyes ahead</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Follow up in mirror</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Checks mirror</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Scans does not stare</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Avoid billboards</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>9)</span></div>
+                    <div class="pdf-section-block-title"><span>Recognizes hazards</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Uses horn</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Makes adjustments</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Path of least resistance</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>10)</span></div>
+                    <div class="pdf-section-block-title"><span>Lights and signals</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Proper use of lights</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Adjust speed</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Signals well in advance</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Cancels signal</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Use of 4 ways</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>11)</span></div>
+                    <div class="pdf-section-block-title"><span>Steering</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Over steers</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Floats</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Poisture and grip</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Centered in lane</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>12)</span></div>
+                    <div class="pdf-section-block-title"><span>Backing</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Size up situation</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Driver side back</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Check rear</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Gets attention</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Backs slowly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Rechecks conditions</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">g)  Uses other aids</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">h)  Steers correctly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">i)  Does not hit dock</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>13)</span></div>
+                    <div class="pdf-section-block-title"><span>Speed</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Adjust to conditions</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Speed</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Proper following distance</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Speed on curves</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>14)</span></div>
+                    <div class="pdf-section-block-title"><span>Intersections</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Approach decision point</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Clear intersection</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Check mirrors</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Full stop</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Times light or starts</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Steering axel staright</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">g)  Yields right of way</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">h)  Proper speed or gear</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">i)  Leaves space</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">j)  Stop lines</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">k)  Railroad crossings</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>15)</span></div>
+                    <div class="pdf-section-block-title"><span>Turning</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Signals correctly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Gets in proper lane</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Downshifts to pulling gear</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Handles light correctly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Setup and execution</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Turn speed</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">g)  Mirror follow up</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">h)  Turns lane to lane</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>16)</span></div>
+                    <div class="pdf-section-block-title"><span>Parking</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Does not hit curb</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Curbs wheels</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Chock wheels</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Park brake applied</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Trans in neutral</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Engine off</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>17)</span></div>
+                    <div class="pdf-section-block-title"><span>Multiple trailers</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Heavier trailer in front</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Builds equip properly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Understand types of dollies</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Secures dolly properly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Speed control on turns</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Avoids abrupt meneuvers</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">g)  Backs one item</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">h)  Safe while connecting dolly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">i)  Avoid shifting load</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>18)</span></div>
+                    <div class="pdf-section-block-title"><span>Hills</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Proper gear up down</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Avoids rolling back</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Test brakes prior</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>19)</span></div>
+                    <div class="pdf-section-block-title"><span>Passing</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Sufficient space to pass</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Signals property</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Check mirrors</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div><div class="col-sm-1"></div>
+                    <div class="col-sm-5" style="padding-right: 0px !important;margin-right: 15px;">
+                    <div class="pdf-section-block">
+                    <div class="pdf-section-block-number"><span>20)</span></div>
+                    <div class="pdf-section-block-title"><span>General Safety and Dot Adherence</span></div>
+                    <div class="pdf-section-block-content">
+                    <div class="row"> 
+                <div class="col-sm-10 col-xs-10">a)  Avoids crowding effect</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">b)  Stays right or correct lane</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">c)  Aware hours of service</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">d)  Proper use off mirrors</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">e)  Self confident not complacement</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">f)  Check instruments</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">g)  Uses horn properly</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">h)  Maintains dot log</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">i)  Drives defensively</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">j)  Company haz mat protocol</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">k)  Air cans or line moisture free</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">l)  Avoid distractions while driving</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div><div class="row"> 
+                <div class="col-sm-10 col-xs-10">m)  Works safely to avoid injuries</div>
+                <div class="col-sm-2 col-xs-2" id="01a">N/A</div>
+              </div>
+                    </div>
+                    </div>
+                </div>
+        </div>
+            <div class="col-sm-12  col-xs-12 signatures" style="padding-left: 52px;padding-top: 12px;">
+                <div class="row">
+                    <div class="col-sm-3 col-xs-3">
+                        <table border="3&quot;" style="width: 360px;margin-left: 45%;">
+                            <tbody>
+                                <tr>
+                                    <td style="border-bottom:3px solid grey">Possible Points: </td>
+                                    <td id="pointsPossible" style="border-bottom:3px solid grey; text-align: center;">110</td>
+                                    <td rowspan="2" style="border-left:3px solid grey; border-right:3px solid grey; text-align: center;"> % Eff
+                                    </td>
+                                    <td style="text-align: center;" rowspan="2" id="pointsPercentage">67.27%</td>
+                                </tr>
+                                <tr style="border-bottom:3px solid grey">
+                                    <td style="border-bottom:3px solid grey">Points Received: </td>
+                                    <td style="border-bottom:3px solid grey; text-align: center;" id="pointsReceived">74</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-9 col-xs-9 text-center">
+                        <span></span>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="row" style="border:1px solid grey">
+                            <div class="col-sm-6 col-xs-6" style="border-right:1px solid grey">
+                                <span>Corrective lens required:</span>
+                                <span id="correctiveLensRequired">No</span>
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <span>Evaluation Location:</span>
+                                <span id="pdf_evaluation_location">Home</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="border:1px solid grey">
+                            <div class="col-sm-6 col-xs-6" style="border-right:1px solid grey">
+                                <span>Driver Name:</span>
+                                <span id="pdf_driver_name">Ron Ron</span>
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <span>Driver License Expiration Date:</span>
+                                <span id="driverLicenseExpirationDateBottom">2021-09-22</span>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-sm-2 col-xs-2">
+                    <span style="line-height: 75px;">Driver signature:</span>
+                </div>
+                <div class="col-sm-6 col-xs-6" style="border-bottom:2px solid grey;">
+                    <img  src= id="pdf_driver_signature" width="100" height="50">
+                    <span id="pdf_driver_signature_name"></span>
+                </div>
+                <div class="col-sm-4 col-xs-4">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-4">
+                            <span>Date:</span>
+                        </div>
+                        <div class="col-sm-8 col-xs-8" style="border-bottom:2px solid grey">
+                            <span id="pdf_driver_signature_date">2021-04-21</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-sm-2 col-xs-2">
+                    <span style="line-height: 75px;">Evaluator signature:</span>
+                </div>
+                <div class="col-sm-6 col-xs-6" style="border-bottom:2px solid grey;">
+                    <img  src= id="pdf_driver_signature" width="100" height="50">
+                    <span id="pdf_driver_signature_name"></span>
+                </div>
+                <div class="col-sm-4 col-xs-4">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-4">
+                            <span>Date:</span>
+                        </div>
+                        <div class="col-sm-8 col-xs-8" style="border-bottom:2px solid grey">
+                            <span id="pdf_driver_signature_date">2021-04-21</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-sm-2 col-xs-2">
+                    <span style="line-height: 75px;">Company rep signature:</span>
+                </div>
+                <div class="col-sm-6 col-xs-6" style="border-bottom:2px solid grey;">
+                    <img  src= id="pdf_driver_signature" width="100" height="50">
+                    <span id="pdf_driver_signature_name"></span>
+                </div>
+                <div class="col-sm-4 col-xs-4">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-4">
+                            <span>Date:</span>
+                        </div>
+                        <div class="col-sm-8 col-xs-8" style="border-bottom:2px solid grey">
+                            <span id="pdf_driver_signature_date">2021-04-21</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+    
+        <div id="pdf_template_2" style="padding-left: 30px;">
+            <div class="pdf-sections-results">
+                <table class="table table-bordered" id ="table">
+                <tbody>
+                    
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>1</td>
+                    <td>Cab safety</td>
+                    <td id="01_possible_p">Possible Points: 20</td>
+                    <td id="01_received_p">Points Received: 14</td>
+                    <td id="01_effective_p">Percent Effective: 70.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">1a). I reinforced with Ron to ensure that the Seat belt must be on anytime the wheels are moving - Used properly with no cuts or frays to the belt - working properly.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">1b). I reinforced with Ron to avoid all distraction including within cab (Manual, Visual and Cognitive).</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">1c). I instructed Ron to remove all items that can result in an obstruction to mechanical use or visibility.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">1d). I instructed Ron to verify that all Chemicals in vehicle must be listed on company's Safety Data Sheets.</td>
+                       </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>2</td>
+                    <td>Start engine</td>
+                    <td id="01_possible_p">Possible Points: 20</td>
+                    <td id="01_received_p">Points Received: 13</td>
+                    <td id="01_effective_p">Percent Effective: 65.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">2a). I instructed Ron to verify that  Park Brake is applied anytime your away from the vehicle, transmission in neutral / Park to secure unit.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">2b). I instructed Ron to always verify that the Park Brake is applied, transmission in neutral / Park anytime in a park position to secure unit.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">2c). I reinforced with Ron to disengage the clutch whenever you are starting the engine.</td>
+                       </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>3</td>
+                    <td>Engine operation</td>
+                    <td id="01_possible_p">Possible Points: 20</td>
+                    <td id="01_received_p">Points Received: 9</td>
+                    <td id="01_effective_p">Percent Effective: 45.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">3a). I reinforced with Ron to maintain proper engine speed while driving, normal</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">3b). I instructed Ron to maintain proper engine speed while driving, normal</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">3c). I instructed Ron to check gauges occasionally when safe and verify that they are in the normal operating range (RPM, Speed, Fuel, Air, Oil, Water).</td>
+                       </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>4</td>
+                    <td>Clutch and transmission</td>
+                    <td id="01_possible_p">Possible Points: 20</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: N/A %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">4a). I instructed Ron to avoid clutch and transmission damage by starting off in</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">4b). I reinforced with Ron to use the Tach to Upshift and Downshift in sequential</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">4c). I instructed Ron to use the Tach to shift smoothly, use a 400 RPM split between shifts (Avoid scratching and grinding this can cause Clutch and transmission damage).</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">4d). I instructed Ron to use the Tach to Upshift and Downshift in sequential order,  the normal shifting speed is between 1200 and 1600 RPM's (don't coast).</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">4e). I reinforced with Ron to avoid riding clutch pedal, remove foot between shifts.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">4f). I instructed Ron to avoid coasting. Coasting is illegal, always maintain the proper gear for your speed to assist with controlling vehicle speed.</td>
+                       </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>5</td>
+                    <td>Coupling</td>
+                    <td id="01_possible_p">Possible Points: 25</td>
+                    <td id="01_received_p">Points Received: 18</td>
+                    <td id="01_effective_p">Percent Effective: 72.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">5a). I reinforced with Ron to identify any hazards that can effect coupling (Six sides: front, Right side, rear, left side, over and under).</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">5b). I instructed Ron to back under the trailer slowly to avoid damage to king pin and trailer plate (Correct backing speed is of a person walking at a normal walk pace).</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">5c). I reinforced with Ron to follow a consistent routine when securing equipment, avoid distractions.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">5d). I instructed Ron to complete a proper and gentle test tug. Check space between the Apron Plate and 5th wheel, check handle in lock position, Jaws in lock position around the king pin.</td>
+                       </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">5e). I reinforced with Ron to charge system by releasing (Push in) the trailer air supply (Red Bottom) and listen for the air filling the air tanks.</td>
+                       </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>6</td>
+                    <td>Uncoupling</td>
+                    <td id="01_possible_p">Possible Points: 25</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>7</td>
+                    <td>Brakes and stopping</td>
+                    <td id="01_possible_p">Possible Points: 45</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>8</td>
+                    <td>Eye movement and mirror</td>
+                    <td id="01_possible_p">Possible Points: 25</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>9</td>
+                    <td>Recognizes hazards</td>
+                    <td id="01_possible_p">Possible Points: 15</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>10</td>
+                    <td>Lights and signals</td>
+                    <td id="01_possible_p">Possible Points: 25</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>11</td>
+                    <td>Steering</td>
+                    <td id="01_possible_p">Possible Points: 20</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>12</td>
+                    <td>Backing</td>
+                    <td id="01_possible_p">Possible Points: 45</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                    <tr class="pdf-table-row-white">
+                       <td colspan="6">12a).  size-up the backing situation, looking for all hazard to determine safest approach - backing in not out.</td>
+                       </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>13</td>
+                    <td>Speed</td>
+                    <td id="01_possible_p">Possible Points: 20</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>14</td>
+                    <td>Intersections</td>
+                    <td id="01_possible_p">Possible Points: 55</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>15</td>
+                    <td>Turning</td>
+                    <td id="01_possible_p">Possible Points: 40</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>16</td>
+                    <td>Parking</td>
+                    <td id="01_possible_p">Possible Points: 30</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>17</td>
+                    <td>Multiple trailers</td>
+                    <td id="01_possible_p">Possible Points: 45</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>18</td>
+                    <td>Hills</td>
+                    <td id="01_possible_p">Possible Points: 15</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>19</td>
+                    <td>Passing</td>
+                    <td id="01_possible_p">Possible Points: 15</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                <tr id="01_tr" class="pdf-table-row">
+                    <td>20</td>
+                    <td>General safety and dot adherence</td>
+                    <td id="01_possible_p">Possible Points: 65</td>
+                    <td id="01_received_p">Points Received: N/A</td>
+                    <td id="01_effective_p">Percent Effective: 0.00 %</td>
+                    <td id="01_note">Note: N/A </td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+            <div id="container1" style="min-height: 400px; min-width:300px; margin:0 auto;"></div>
+            <div id="container2" style="min-height: 400px; min-width:300px; margin:0 auto;"></div>
+            <div id="turnsDiv"> 
+            <img id="turnsMap" style="width:100%;margin: 0 auto" />
+            <div/>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+                Highcharts.chart('container1', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Element Effective Chart'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        labels: {
+                            rotation: -45,
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.y:.1f}%</b>'
+                    },
+                    series: [{
+                        name: 'Probability',
+                        data: [["Cab safety", 70],["Start engine", 65],["Engine operation", 45],["Coupling", 72],["Uncoupling", 0],["Brakes and stopping", 0],["Eye movement and mirror", 0],["Recognizes hazards", 0],["Lights and signals", 0],["Steering", 0],["Backing", 0],["Speed", 0],["Intersections", 0],["Turning", 0],["Parking", 0],["Multiple trailers", 0],["Hills", 0],["Passing", 0],["General safety and dot adherence", 0]],
+                        dataLabels: {
+                            enabled: true,
+                            rotation: -90,
+                            color: '#FFFFFF',
+                            align: 'right',
+                            format: '{point.y:.1f}', // one decimal
+                            y: 10, // 10 pixels down from the top
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        }
+                    }]
+                });
+
+                Highcharts.chart('container2', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Accident Probability Chart'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        labels: {
+                            rotation: -45,
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.y:.1f}%</b>'
+                    },
+                    series: [{
+                        name: 'Probability',
+                        data: [undefined],
+                        dataLabels: {
+                            enabled: true,
+                            rotation: -90,
+                            color: '#FFFFFF',
+                            align: 'right',
+                            format: '{point.y:.1f}', // one decimal
+                            y: 10, // 10 pixels down from the top
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        }
+                    }]
+                });
+            </script>
+            <div>
+            <img  src=undefined id="map_screenshot_url" >
+            </div>
+</div>
+
+</body>
+</html>

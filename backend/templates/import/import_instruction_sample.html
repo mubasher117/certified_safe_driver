@@ -1,0 +1,25 @@
+<table style="max-width: 100%; width: 100%; overflow-y: auto; display: block">
+    <thead>
+    <tr>
+{#        <th>DB Table</th>#}
+        <th>Model Name</th>
+        <th>Field Name</th>
+        <th>DB Field</th>
+        <th>Instruction</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for field in field_list %}
+            {% for data in field.data %}
+                <tr class="">
+{#                {{ data }}#}
+{#                    <th>{{ field.db_table }}</th>#}
+                    <th>{{ field.title }}</th>
+                    <th>{{ data.title }}</th>
+                    <td>{{ data.field }}</td>
+                    <td>Sample Text</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>

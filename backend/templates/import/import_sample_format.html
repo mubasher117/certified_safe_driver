@@ -1,0 +1,26 @@
+<table style="max-width: 100%; width: 100%; overflow-y: auto; display: block">
+    <thead>
+    <tr>
+{#        <th>DB Table</th>#}
+        <th>Model Name</th>
+        <th>Key Name</th>
+        <th>DB Field</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key, value in choices %}
+        {% for field in field_list %}
+            {% for data in field.data %}
+                <tr class="">
+{#                    <th>{{ field.db_table }}</th>#}
+                    <th>{{ field.title }}</th>
+                    <th>{{ value }} => {{ key }}</th>
+                    <td>{{ data.title }} => {{ data.field }}</td>
+                    <td>2.00</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
